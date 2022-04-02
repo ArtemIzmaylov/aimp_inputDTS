@@ -1,6 +1,6 @@
  library aimp_InputDTS;
 
-{$I ABL.PEFlagsForDLL.inc}
+{$I AIMP.InputDTS.inc}
 
 uses
   apiPlugin, AIMP.InputDTS.Plugin;

@@ -24,7 +24,7 @@ unit AIMP.InputDTS.Plugin;
 interface
 
 uses
-  Windows, apiObjects, apiPlugin, apiCore, apiFileManager, apiDecoders, AIMPCustomPlugin, AIMP.InputDTS.Parser;
+  Windows, apiObjects, apiPlugin, apiCore, apiFileManager, apiDecoders, AIMP.InputDTS.Parser;
 
 type
   TAIMPDCAPlugin = class;
@@ -70,6 +70,8 @@ type
   TAIMPDCAFileFormat = class(TInterfacedObject, IAIMPExtensionFileFormat)
   strict private
     FOwner: TAIMPDCAPlugin;
+
+    function MakeString(const D: string; out S: IAIMPString): HRESULT;
   public
     constructor Create(AOwner: TAIMPDCAPlugin);
     // IAIMPExtensionFileFormat
@@ -80,17 +82,22 @@ type
 
   { TAIMPDCAPlugin }
 
-  TAIMPDCAPlugin = class(TAIMPCustomPlugin)
+  TAIMPDCAPlugin = class(TInterfacedObject, IAIMPPlugin)
   protected
-    function InfoGet(Index: Integer): PWideChar; override; stdcall;
-    function InfoGetCategories: Cardinal; override; stdcall;
-    function Initialize(Core: IAIMPCore): HRESULT; override; stdcall;
+    FCore: IAIMPCore;
+
+    // IAIMPPlugin
+    function InfoGet(Index: Integer): PWideChar; stdcall;
+    function InfoGetCategories: DWORD; stdcall;
+    function Initialize(Core: IAIMPCore): HRESULT; stdcall;
+    procedure Finalize; stdcall;
+    procedure SystemNotification(NotifyID: Integer; Data: IUnknown); stdcall;
   end;
 
 implementation
 
 uses
-  apiWrappers, SysUtils;
+  SysUtils;
 
 { TAIMPDCADecoder }
 
@@ -195,14 +202,12 @@ end;
 
 function TAIMPDCAFileFormat.GetDescription(out S: IAIMPString): HRESULT;
 begin
-  S := MakeString('Digital Theater System (DTS)');
-  Result := S_OK;
+  Result := MakeString('Digital Theater System (DTS)', S);
 end;
 
 function TAIMPDCAFileFormat.GetExtList(out S: IAIMPString): HRESULT;
 begin
-  S := MakeString('*.dts;*.wav;');
-  Result := S_OK;
+  Result := MakeString('*.dts;*.wav;', S);
 end;
 
 function TAIMPDCAFileFormat.GetFlags(out Flags: Cardinal): HRESULT;
@@ -211,7 +216,34 @@ begin
   Result := S_OK;
 end;
 
+function TAIMPDCAFileFormat.MakeString(const D: string; out S: IAIMPString): HRESULT;
+begin
+  if Succeeded(FOwner.FCore.CreateObject(IID_IAIMPString, S)) then
+  begin
+    S.SetData(PChar(D), Length(D));
+    Result := S_OK;
+  end
+  else
+    Result := E_UNEXPECTED;
+end;
+
 { TAIMPDCAPlugin }
+
+function TAIMPDCAPlugin.Initialize(Core: IAIMPCore): HRESULT;
+begin
+  if Core <> nil then
+  begin
+    FCore := Core;
+    FCore.RegisterExtension(IID_IAIMPServiceAudioDecoders, TAIMPDCADecoderExtension.Create(Self));
+    FCore.RegisterExtension(IID_IAIMPServiceFileFormats, TAIMPDCAFileFormat.Create(Self));
+  end;
+  Result := S_OK;
+end;
+
+procedure TAIMPDCAPlugin.Finalize;
+begin
+  FCore := nil;
+end;
 
 function TAIMPDCAPlugin.InfoGet(Index: Integer): PWideChar;
 begin
@@ -234,14 +266,9 @@ begin
   Result := AIMP_PLUGIN_CATEGORY_DECODERS;
 end;
 
-function TAIMPDCAPlugin.Initialize(Core: IAIMPCore): HRESULT;
+procedure TAIMPDCAPlugin.SystemNotification(NotifyID: Integer; Data: IInterface);
 begin
-  Result := inherited Initialize(Core);
-  if Succeeded(Result) then
-  begin
-    Core.RegisterExtension(IID_IAIMPServiceAudioDecoders, TAIMPDCADecoderExtension.Create(Self));
-    Core.RegisterExtension(IID_IAIMPServiceFileFormats, TAIMPDCAFileFormat.Create(Self));
-  end;
+  // do nothing
 end;
 
 end.
