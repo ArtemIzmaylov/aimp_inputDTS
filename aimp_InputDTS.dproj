@@ -3,11 +3,11 @@
         <ProjectGuid>{6CA0F1D1-3F64-4F92-9638-BBA142E8DCEA}</ProjectGuid>
         <MainSource>aimp_InputDTS.dpr</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Debug</Config>
-        <TargetedPlatforms>1</TargetedPlatforms>
+        <Config Condition="'$(Config)'==''">Release</Config>
+        <TargetedPlatforms>3</TargetedPlatforms>
         <AppType>Library</AppType>
         <FrameworkType>None</FrameworkType>
-        <ProjectVersion>16.1</ProjectVersion>
+        <ProjectVersion>19.4</ProjectVersion>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
@@ -18,6 +18,11 @@
         <CfgParent>Base</CfgParent>
         <Base>true</Base>
     </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Base)'=='true') or '$(Base_Win64)'!=''">
+        <Base_Win64>true</Base_Win64>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_1)'!=''">
         <Cfg_1>true</Cfg_1>
         <CfgParent>Base</CfgParent>
@@ -25,6 +30,12 @@
     </PropertyGroup>
     <PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_1)'=='true') or '$(Cfg_1_Win32)'!=''">
         <Cfg_1_Win32>true</Cfg_1_Win32>
+        <CfgParent>Cfg_1</CfgParent>
+        <Cfg_1>true</Cfg_1>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Cfg_1)'=='true') or '$(Cfg_1_Win64)'!=''">
+        <Cfg_1_Win64>true</Cfg_1_Win64>
         <CfgParent>Cfg_1</CfgParent>
         <Cfg_1>true</Cfg_1>
         <Base>true</Base>
@@ -44,7 +55,7 @@
         <DCC_DcuOutput>B:\DCUs\</DCC_DcuOutput>
         <SanitizedProjectName>aimp_InputDTS</SanitizedProjectName>
         <Manifest_File>None</Manifest_File>
-        <DCC_ExeOutput>..\..\..\Binary\Plugins\aimp_InputDTS\</DCC_ExeOutput>
+        <DCC_ExeOutput>..\..\trunk\AIMP\Binary\$(Platform)\Plugins\aimp_InputDTS\</DCC_ExeOutput>
         <DCC_K>false</DCC_K>
         <GenDll>true</GenDll>
         <DCC_E>false</DCC_E>
@@ -57,10 +68,19 @@
         <VerInfo_Locale>1049</VerInfo_Locale>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName);FileDescription=$(MSBuildProjectName);ProductName=$(MSBuildProjectName)</VerInfo_Keys>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
         <VerInfo_Locale>1033</VerInfo_Locale>
+        <Debugger_HostApplication>..\..\trunk\AIMP\Binary\Win32\AIMP.exe</Debugger_HostApplication>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Base_Win64)'!=''">
+        <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;$(DCC_Namespace)</DCC_Namespace>
+        <BT_BuildType>Debug</BT_BuildType>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Locale>1033</VerInfo_Locale>
+        <Debugger_HostApplication>..\..\trunk\AIMP\Binary\Win64\AIMP.exe</Debugger_HostApplication>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
@@ -72,7 +92,13 @@
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_MinorVer>21</VerInfo_MinorVer>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.21.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileVersion=1.21.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName);FileDescription=$(MSBuildProjectName);ProductName=$(MSBuildProjectName)</VerInfo_Keys>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <VerInfo_Locale>1033</VerInfo_Locale>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <AppDPIAwarenessMode>none</AppDPIAwarenessMode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
@@ -82,24 +108,23 @@
         <DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
-        <Debugger_HostApplication>D:\Projects\AIMP Classic\AIMP for Windows\trunk\AIMP\Binary\AIMP.exe</Debugger_HostApplication>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName);FileDescription=$(MSBuildProjectName);ProductName=$(MSBuildProjectName)</VerInfo_Keys>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <BuildConfiguration Include="Debug">
-            <Key>Cfg_2</Key>
-            <CfgParent>Base</CfgParent>
-        </BuildConfiguration>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
         <BuildConfiguration Include="Release">
             <Key>Cfg_1</Key>
+            <CfgParent>Base</CfgParent>
+        </BuildConfiguration>
+        <BuildConfiguration Include="Debug">
+            <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
         </BuildConfiguration>
     </ItemGroup>
@@ -150,7 +175,7 @@
             </Delphi.Personality>
             <Platforms>
                 <Platform value="Win32">True</Platform>
-                <Platform value="Win64">False</Platform>
+                <Platform value="Win64">True</Platform>
             </Platforms>
         </BorlandProject>
         <ProjectFileVersion>12</ProjectFileVersion>

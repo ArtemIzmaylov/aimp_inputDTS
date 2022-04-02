@@ -249,7 +249,7 @@ function TAIMPDCAPlugin.InfoGet(Index: Integer): PWideChar;
 begin
   case Index of
     AIMP_PLUGIN_INFO_NAME:
-      Result := 'Digital Theater System (DTS) v1.25';
+      Result := 'Digital Theater System (DTS) v1.26';
     AIMP_PLUGIN_INFO_AUTHOR:
       Result := 'Artem Izmaylov';
     AIMP_PLUGIN_INFO_SHORT_DESCRIPTION:
