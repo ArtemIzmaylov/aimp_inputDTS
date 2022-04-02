@@ -30,7 +30,7 @@ type
 
   { TDCABuffer }
 
-  TDCABuffer = class(TObject)
+  TDCABuffer = class
   strict private
     FData: PByte;
     FSize: Integer;
@@ -47,7 +47,9 @@ type
 
   { TDCAParser }
 
-  TDCAParser = class(TObject)
+  TDCAParser = class
+  const
+    NumberOfFramesToCheckTheStream = 3;
   strict private
     FBitrate: Integer;
     FBlockCount, FBlockIndex: Integer;
@@ -205,6 +207,7 @@ end;
 function TDCAParser.Initialize: Boolean;
 var
   AFrameSize: Integer;
+  I: Integer;
 begin
   Result := False;
   if ReadFrame(FChannelsFlags, AFrameSize, FBitrate, FSampleRate) then
@@ -215,7 +218,18 @@ begin
         FBitrate := 1411200; // std;
       FContentOffset := Source.GetPosition;
       FDuration := (Source.GetSize - ContentOffset) / (Bitrate / 8);
-      Result := PrepareNextFrame;
+
+      // check few frames to make sure that the stream is a real DTS stream
+      Result := True;
+      for I := 1 to NumberOfFramesToCheckTheStream do
+        Result := Result and PrepareNextFrame;
+
+      // rollback to first frame
+      if Result then
+      begin
+        Source.Seek(FContentOffset, AIMP_STREAM_SEEKMODE_FROM_BEGINNING);
+        Result := PrepareNextFrame;
+      end;
     end;
   end;
 end;
