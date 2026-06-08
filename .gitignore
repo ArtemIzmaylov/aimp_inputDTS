@@ -1,0 +1,5 @@
+﻿.vs
+obj
+aimp_sdk
+*.dll
+*.so

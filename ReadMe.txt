@@ -1,12 +1,6 @@
 About
 ===========================================
-aimp_InputDTS - Free DTS Decoder Plugin for AIMP v5.00, written on Delphi 11.1 and released under GNU GPL terms. 
-Source code of the plugin you can find on https://www.aimp.ru.
+aimp_InputDTS is free DTS decoding plugin for AIMP5 (or newer), written on VS2016 and released under GNU GPL terms. 
+Source code of the plugin you can find here: https://github.com/ArtemIzmaylov/aimp_inputDTS.
 
-Based on libdca.
-See http://www.videolan.org/developers/libdca.html for more information and updates.
-
-Installation
-===========================================
-1. Move the aimp_InputDTS folder to the "<AIMP>\Plugins\" directory
-2. Restart AIMP
+Based on libdca, refer to http://www.videolan.org/developers/libdca.html for more details.
