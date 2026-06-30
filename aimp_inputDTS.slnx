@@ -1,7 +1,0 @@
-<Solution>
-  <Configurations>
-    <Platform Name="x64" />
-    <Platform Name="x86" />
-  </Configurations>
-  <Project Path="aimp_inputDTS.vcxproj" Id="e575960f-1556-4357-9e92-8149d5b5b106" />
-</Solution>
